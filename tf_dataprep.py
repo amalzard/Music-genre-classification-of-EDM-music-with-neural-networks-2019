@@ -15,8 +15,6 @@ test_data = currentPath+'/spectrogramSlices/test'
 predict_data = currentPath+'/spectrogramSlices/predict'
 
 class_names = []
-#class_count = 0
-#class_names = ['Drum & Bass', 'Glitch', 'Hardcore', 'Hardstyle', 'House', 'Electro House', 'Dubstep']
 
 def genre_label(img):
 	label = img.split('_')[0]
@@ -24,7 +22,6 @@ def genre_label(img):
 		genre_label = np.array([class_names.index(label)])
 	else:
 		class_names.append(label)
-		#class_count += 1
 		genre_label = np.array([class_names.index(label)])
 	
 	return genre_label
@@ -34,7 +31,6 @@ def train_data_gen():
     for i in tqdm(os.listdir(train_data)):
         path = os.path.join(train_data,i)
         img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
-        #img = cv2.resize(img, (64,64))
         train_images.append([np.array(img), genre_label(i)])
     shuffle(train_images)
     print("Training images:", len(train_images))
@@ -51,7 +47,6 @@ def test_data_gen():
     for i in tqdm(os.listdir(test_data)):
         path = os.path.join(test_data, i)
         img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
-        #img = cv2.resize(img, (64, 64))
         test_images.append([np.array(img), genre_label(i)])
     print("Testing images: ", len(test_images))
     return test_images
@@ -61,56 +56,20 @@ def predict_data_gen():
     for i in tqdm(os.listdir(predict_data)):
         path = os.path.join(predict_data, i)
         img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
-        #img = cv2.resize(img, (64, 64))
         predict_images.append([np.array(img)])
     print("Pediction images: ", len(predict_images))
     return predict_images
 
-def plot_image(i, predictions_array, img):
-  predictions_array, img = predictions_array[i], img[i]
-  plt.grid(False)
-  plt.xticks([])
-  plt.yticks([])
-  
-  plt.imshow(img, cmap=plt.cm.binary)
-
-  predicted_label = np.argmax(predictions_array)
-  plt.xlabel("{} {:2.0f}%".format(class_names[predicted_label],
-                                100*np.max(predictions_array)))
-
-def plot_value_array(i, predictions_array):
-  predictions_array = predictions_array[i]
-  plt.grid(False)
-  plt.xticks([])
-  plt.yticks([])
-  thisplot = plt.bar(range(10), predictions_array, color="#777777")
-  plt.ylim([0, 1]) 
-  predicted_label = np.argmax(predictions_array)
- 
-  thisplot[predicted_label].set_color('red')
-
-
-#def test_label_gen():
-	#test_labels = []
-	#for i in tqdm(os.listdir(test_data)):
-		#test_labels.append(one_hot_label(i))
-	#return test_labels
 
 from keras.models import  Sequential
 from keras.layers import  *
 from keras.optimizers import  *
 
 training_images = train_data_gen()
-#training_images = np.array(training_images)
 tr_img_data = np.array([i[0] for i in training_images]).reshape(-1,128,128,1)
 tr_lbl_data = np.array([i[1] for i in training_images])
 print(len(class_names))
-#print(training_images.shape)
-#training_labels = train_label_gen()
-#training_labels = np.array(training_labels)
-#print(training_labels)
 testing_images = test_data_gen()
-#testing_images = np.array(testing_images)
 tst_img_data = np.array([i[0] for i in testing_images]).reshape(-1,128,128,1)
 tst_lbl_data = np.array([i[1] for i in testing_images])
 
