@@ -36,12 +36,6 @@ def train_data_gen():
     print("Training images:", len(train_images))
     return train_images
 
-#def train_label_gen():
-	#train_labels = []
-	#for i in tqdm(os.listdir(train_data)):
-		#train_labels.append(one_hot_label(i))
-	#return train_labels
-
 def test_data_gen():
     test_images = []
     for i in tqdm(os.listdir(test_data)):
@@ -75,18 +69,6 @@ tst_lbl_data = np.array([i[1] for i in testing_images])
 
 predicting_images = predict_data_gen()
 pred_img_data = np.array([i for i in predicting_images]).reshape(-1,128,128,1)
-#testing_labels = test_label_gen()
-#testing_labels = np.array(testing_labels)
-
-#plt.figure(figsize=(10,10))
-#for i in range(25):
-    #plt.subplot(5,5,i+1)
-    #plt.xticks([])
-    #plt.yticks([])
-    #plt.grid(False)
-    #plt.imshow(tr_img_data[i], cmap=plt.cm.binary)
-    #plt.xlabel(class_names[tr_lbl_data[i]])
-#plt.show()
 numberOfClasses = len(class_names)
 
 
@@ -145,11 +127,6 @@ for cnt, data in enumerate(predicting_images):
 
 
 
-    #y.imshow(img, cmap= 'gray')
-    #name = str_label + str(cnt) + ".jpg"
-    #cv2.imwrite(name,img)
-    #plt.title(str_label)
-    #print(str_label)
     print("{} {:2.0f}%".format(str_label, 100*np.max(model_out)))
     if 100*np.max(model_out) >= 95:
     	predictionsOver += 1.0
@@ -162,30 +139,8 @@ for cnt, data in enumerate(predicting_images):
     
 
 
-    #y.axes.get_xaxis().set_visible(False)
-    #y.axes.get_yaxis().set_visible(False)
-#plt.show()
-# Plot the first X test images, their predicted label, and the true label
-# Color correct predictions in blue, incorrect predictions in red
-# num_rows = 5
-# num_cols = 3
-# num_images = num_rows*num_cols
-# plt.figure(figsize=(2*2*num_cols, 2*num_rows))
-
-# for i in range(num_images):
-# 	predicting = np.array(predicting_images)
-# 	img = predicting[i]
-# 	data = img.reshape(1,128,128,1)
-# 	model_out = model.predict([data])
-#  	plt.subplot(num_rows, 2*num_cols, 2*i+1)
-#  	plot_image(i, model_out, img)
-#  	plt.subplot(num_rows, 2*num_cols, 2*i+2)
-#  	#plot_value_array(i, model_out)
-# plt.show()
 print(genre_count)
 maximum = max(genre_count.values())
-#print(predictionsOver)
-#print(maximum)
 percentOfMax = maximum / predictionsOver
 percent = percentOfMax * 100
 print("{} {:3.0f}%".format(str_label, percent))
