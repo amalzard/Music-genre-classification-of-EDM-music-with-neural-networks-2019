@@ -23,8 +23,8 @@ def predictGenre(model, class_names):
 		model_out = model.predict([data])
 		i = np.argmax(model_out)
 		str_label = class_names[i]
-		print("{} {:2.0f}%".format(str_label, 100*np.max(model_out)))
-		if 100*np.max(model_out) >= 50:
+		print("{} {} {:2.0f}%".format(cnt, str_label, 100*np.max(model_out)))
+		if 100*np.max(model_out) >= 90:
 			predictionsOver += 1.0
 			if str_label in genre_count:
 				genre_count[str_label] += 1
@@ -33,6 +33,7 @@ def predictGenre(model, class_names):
 
 	print(genre_count)
 	maximum = max(genre_count.values())
+	maxGenre = list(genre_count.keys())[list(genre_count.values()).index(maximum)]
 	percentOfMax = maximum / predictionsOver
 	percent = percentOfMax * 100
-	print("{} {:3.0f}%".format(str_label, percent))
+	print("{} {:3.0f}%".format(maxGenre, percent))
