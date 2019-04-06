@@ -40,7 +40,9 @@ def createModel(class_names):
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
 	
-	model.load_weights('first_try.h5')
+	model.load_weights('fullModel5.h5')
+
+	print("Weights Loaded!")
 
 	return model
 

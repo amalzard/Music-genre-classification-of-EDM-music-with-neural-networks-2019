@@ -27,22 +27,22 @@ def trainModel(class_names):
 
     #training_images = train_data_gen()
     training_images = train_data_gen()
-    testing_images = test_data_gen()
+    #testing_images = test_data_gen()
     tr_img_data = np.array([i[0] for i in training_images]).reshape(-1,128,128,1)
     tr_lbl_data = np.array([i[1] for i in training_images])
     #print(training_images)
     #print(len(class_names))
     #testing_images = test_data_gen()
-    tst_img_data = np.array([i[0] for i in testing_images]).reshape(-1,128,128,1)
-    tst_lbl_data = np.array([i[1] for i in testing_images])
+    #tst_img_data = np.array([i[0] for i in testing_images]).reshape(-1,128,128,1)
+    #tst_lbl_data = np.array([i[1] for i in testing_images])
     #print(tst_lbl_data)
 
-    predicting_images = predict_data_gen()
-    pred_img_data = np.array([i for i in predicting_images]).reshape(-1,128,128,1)
+    #predicting_images = predict_data_gen()
+    #pred_img_data = np.array([i for i in predicting_images]).reshape(-1,128,128,1)
     class_names = returnClassNames()
     numberOfClasses = len(class_names)
     
-    print(numberOfClasses)
+    #print(numberOfClasses)
     model = Sequential()
 
     model.add(InputLayer(input_shape=[128,128,1]))
@@ -70,9 +70,9 @@ def trainModel(class_names):
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
     
-    #model.load_weights('first_try.h5')
+    #model.load_weights('fullModel4.h5')
 
-    print("Weights Loaded!")
+    #print("Weights Loaded!")
 
     #model = createModel(class_names)
 
@@ -80,16 +80,16 @@ def trainModel(class_names):
 
 
 
-    model.save('fullModel2.h5')
+    model.save('fullModel5.h5')
 
     print("Model Saved!")
 
 
 
 
-#test_loss, test_acc = model.evaluate(tst_img_data, tst_lbl_data)
+    #test_loss, test_acc = model.evaluate(tst_img_data, tst_lbl_data)
 
-#print('Test accuracy:', test_acc)
+    #print('Test accuracy:', test_acc)
 
 
 

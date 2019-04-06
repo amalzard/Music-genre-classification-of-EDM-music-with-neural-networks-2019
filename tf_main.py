@@ -40,16 +40,18 @@ if "slice" in args.mode:
 	sys.exit()
 
 if "predict" in args.mode:
-	convertPredictionMp3ToSpectrogram()
+	track_list = convertPredictionMp3ToSpectrogram()
 	slicePredictionSpectrograms()
+	#print(track_list)
 	training_images = train_data_gen()
 	class_names = returnClassNames()
-	#print(class_names)
 	numberOfClasses = len(class_names)
 	model = createModel(class_names)
 
-	print("Weights Loaded!")
-	predictGenre(model, class_names)
+	#print("Weights Loaded!")
+	print("------------------------------")
+	predictGenre(model, class_names, track_list)
+	print("------------------------------")
 	sys.exit()
 
 if "train" in args.mode:
