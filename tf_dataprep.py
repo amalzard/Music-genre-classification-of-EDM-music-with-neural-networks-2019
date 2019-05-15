@@ -17,7 +17,7 @@ predict_data = currentPath+'/spectrogramSlices/predict'
 class_names = []
 genre_count = {}
 
-def genre_label(img):
+def genre_label(img):           #Adds genre labels to spectrogram slices based on filename/creates an array of current genres
     label = img.split('_')[0]
     if label in class_names:
         genre_label = np.array([class_names.index(label)])
@@ -30,7 +30,7 @@ def genre_label(img):
     return genre_label
 
 
-def train_data_gen():
+def train_data_gen():           #Creates an array of tensors from spectrogram slices of the training dataset
     train_images = []
     currentPath = os.path.dirname(os.path.realpath(__file__))
     train_data = currentPath+'/spectrogramSlices/train'
@@ -44,7 +44,7 @@ def train_data_gen():
     #print(genre_count)
     return train_images
 
-def test_data_gen():
+def test_data_gen():            ##Creates an array of tensors from spectrogram slices of the testing dataset
     test_images = []
     for i in tqdm(os.listdir(test_data)):
         path = os.path.join(test_data, i)
@@ -55,21 +55,14 @@ def test_data_gen():
     #print(class_names)
     return test_images
 
-def predict_data_gen(track_list, track_index):
+def predict_data_gen(track_list, track_index):          ##Creates an array of tensors from spectrogram slices of the prediction data
     predict_image = []
-    #predict_images = []
     for i in os.listdir(predict_data):
         filePart = int(i.split('_')[1])
-        #print(i)
-        #print(filePart)
         path = os.path.join(predict_data, i)
         img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
         if filePart == track_index:
             predict_image.append([np.array(img)])
-        
-    #print("Number of tracks to predict: " + str(len(predict_image)))
-    #test = np.array(predict_image)
-    #print(test.shape)
     return predict_image
 
 def returnClassNames():
