@@ -7,11 +7,14 @@ import tensorflow as tensorflow
 import matplotlib.pyplot as plt
 from tf_dataprep import returnClassNames
 
+
+import tensorflowjs as tfjs
+
 from keras.models import  Sequential
 from keras.layers import  *
 from keras.optimizers import  *
 
-def createModel(class_names):
+def createModel(class_names):			#Creates the model of the network
 	numberOfClasses = len(class_names)
 	model = Sequential()
 
@@ -40,9 +43,9 @@ def createModel(class_names):
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
 	
-	model.load_weights('fullModel5.h5')
+	#model.load_weights('fullModel5.h5')
 
-	print("Weights Loaded!")
+	#print("Weights Loaded!")
 
 	return model
 
