@@ -1,5 +1,5 @@
 #Spectrogram resolution
-pixelPerSecond = 100
+pixelPerSecond = 50
 
 #Slice parameters
 sliceSize = 128
