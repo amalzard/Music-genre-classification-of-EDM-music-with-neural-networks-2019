@@ -13,6 +13,9 @@ from slicePredictionFiles import splitPredictionSpectrogram, slicePredictionSpec
 from tf_model import *
 
 
+import tensorflowjs as tfjs
+
+
 from keras.models import  Sequential
 from keras.layers import  *
 from keras.optimizers import  *
@@ -22,8 +25,9 @@ currentPath = os.path.dirname(os.path.realpath(__file__))
 train_data = currentPath+'/spectrogramSlices/train'
 test_data = currentPath+'/spectrogramSlices/test'
 predict_data = currentPath+'/spectrogramSlices/predict'
+tfjs_target_dir = currentPath
 
-def trainModel(class_names):
+def trainModel(class_names):            #Creates the training network and then trains the network using the training dataset
 
     #training_images = train_data_gen()
     training_images = train_data_gen()
@@ -70,26 +74,22 @@ def trainModel(class_names):
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
     
-    #model.load_weights('fullModel4.h5')
+    model.load_weights('fullModel4.h5')
 
     #print("Weights Loaded!")
 
     #model = createModel(class_names)
 
-    model.fit(x= tr_img_data, y= tr_lbl_data, epochs=10)
+    #model.fit(x= tr_img_data, y= tr_lbl_data, epochs=10)
 
 
 
     model.save('fullModel5.h5')
+    tfjs.converters.save_keras_model(model, tfjs_target_dir)        #Converts the model to a format used by tensorflow.js
+
 
     print("Model Saved!")
 
-
-
-
-    #test_loss, test_acc = model.evaluate(tst_img_data, tst_lbl_data)
-
-    #print('Test accuracy:', test_acc)
 
 
 
