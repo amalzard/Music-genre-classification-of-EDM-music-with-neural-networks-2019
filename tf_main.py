@@ -16,30 +16,30 @@ from tf_predict import predictGenre
 from tf_model import createModel
 from tf_train import *
 
-#from keras.models import  Sequential
-#from keras.layers import  *
-#from keras.optimizers import  *
+from keras.models import  Sequential
+from keras.layers import  *
+from keras.optimizers import  *
 
 currentPath = os.path.dirname(os.path.realpath(__file__))
-train_data = currentPath+'/spectrogramSlices/train'
-test_data = currentPath+'/spectrogramSlices/test'
-predict_data = currentPath+'/spectrogramSlices/predict'
+train_data = currentPath+'/spectrogramSlices/train'			#Stores the spectrogram slices for training data
+test_data = currentPath+'/spectrogramSlices/test'			#Stores the spectrogram slices for testing data
+predict_data = currentPath+'/spectrogramSlices/predict'		#Stores the spectrogram slices of audio files to be predicted
 
 
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument("mode", help="Trains or tests the CNN", nargs='+', choices=["train","test","convert","slice","predict"])
+parser.add_argument("mode", help="Trains or tests the CNN", nargs='+', choices=["train","test","convert","slice","predict", "prep"])
 args = parser.parse_args()
 
-if "convert" in args.mode:
+if "convert" in args.mode:		#Converts the audiofiles to spectrograms
 	convertMp3ToSpectrogram()
 	sys.exit()
 
-if "slice" in args.mode:
+if "slice" in args.mode:		#Slices the spectrogram files for the training and testing datasets
 	sliceSpectrograms()
 	sys.exit()
 
-if "predict" in args.mode:
+if "predict" in args.mode:		#Runs the prediction model
 	track_list = convertPredictionMp3ToSpectrogram()
 	slicePredictionSpectrograms()
 	#print(track_list)
@@ -54,7 +54,23 @@ if "predict" in args.mode:
 	print("------------------------------")
 	sys.exit()
 
-if "train" in args.mode:
+if "prep" in args.mode:		#Prepares the audio files for model prediction
+	track_list = convertPredictionMp3ToSpectrogram()
+	slicePredictionSpectrograms()
+	#print(track_list)
+	#training_images = train_data_gen()
+	#class_names = returnClassNames()
+	#numberOfClasses = len(class_names)
+	#model = createModel(class_names)
+
+	#print("Weights Loaded!")
+	print("------------------------------")
+	#predictGenre(model, class_names, track_list)
+	print("Image Slices Created!")
+	print("------------------------------")
+	sys.exit()
+
+if "train" in args.mode:		#Trains the network model
 	
 	#predicting_images = predict_data_gen()
 	class_names = returnClassNames()
