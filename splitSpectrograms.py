@@ -1,6 +1,7 @@
 import os
 import sys
 from PIL import Image
+from tqdm import tqdm
 
 
 currentPath = os.path.dirname(os.path.realpath(__file__))
@@ -8,8 +9,7 @@ mp3Folder=currentPath+"/mp3/"
 spectrogramsPath=currentPath+"/spectrograms/"
 slicesPath=currentPath+"/spectrogramSlices/"
 
-def splitSpectrogram(filename):
-	print(filename)
+def splitSpectrogram(filename):			#Splits the converted spectrograms into 128 x 128 slices
 	img = Image.open(spectrogramsPath + filename)
 	genre = filename.split("_")[0]
 	width, height = img.size
@@ -20,12 +20,13 @@ def splitSpectrogram(filename):
 		os.makedirs(os.path.dirname(slicesPath+"/train/"))
 	if not os.path.exists(os.path.dirname(slicesPath+"/test/")):
 		os.makedirs(os.path.dirname(slicesPath+"/test/"))
-	for i in range(nbSamples):
-		if i%4 == 0:
-			dest = "test"
-		else:
-			dest = "train"
-		print "Creating slice: ", (i+1), "/", nbSamples, "for", filename
+	for i in tqdm(range(nbSamples)):
+		# if i%4 == 0:
+		# 	dest = "test"
+		# else:
+		# 	dest = "train"
+		dest = "train"
+		#print "Creating slice: ", (i+1), "/", nbSamples, "for", filename
 		startPixel = i*128
 		imgTmp = img.crop((startPixel, 1, startPixel + 128, 128 + 1))
 		imgTmp.save(slicesPath+"{}/{}_{}.png".format(dest,sliceFilename,i))

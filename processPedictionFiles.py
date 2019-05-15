@@ -32,7 +32,7 @@ def createPredictionSpectrogram(filename):
 	print("Deleting .wav...")
 	os.remove(exportedFile)
 
-#coverts flac to mp3, keeping tags. Then deletes the flac
+#converts flac to mp3, keeping tags. Then deletes the flac
 def convertPredictionFlacToMp3(filename):
 	convertedFilename = str(datetime.datetime.now()).split('.')[0]
 	command = 'ffmpeg -loglevel panic -i "{}" -ab 320k -map_metadata 0 -id3v2_version 3 "{}.mp3"'.format(predictionPath+filename, predictionPath+convertedFilename)
@@ -64,7 +64,6 @@ def renamePredictionMp3Files():
 			convertedFilename = (str(datetime.datetime.now()).split('.')[0] + "_" + str(index) + ".mp3")
 			os.rename(predictionPath+filename, predictionPath+convertedFilename)
 
-
 def convertPredictionMp3ToSpectrogram():
 	musicFiles = os.listdir(predictionPath)
 	flacFiles = [file for file in musicFiles if file.endswith(".flac")]
@@ -85,15 +84,19 @@ def convertPredictionMp3ToSpectrogram():
 			print "Converting file {}/{}...".format(index+1,nbFiles)
 			convertPredictionOogToMp3(oggFilename)
 
-	renamePredictionMp3Files()
+	#track_list = renamePredictionMp3Files()
+	track_list = {}
 	musicFiles = os.listdir(predictionPath)
 	mp3Files = [file for file in musicFiles if file.endswith(".mp3")]
 	nbFiles = len(mp3Files)
 	if len(mp3Files) > 0:
 		for index, filename in enumerate(mp3Files):
 			print "Creating spectrogram for file {}/{}...".format(index+1,nbFiles)
+			audio = eyed3.load(predictionPath + filename)
+			trackString = audio.tag.title + " - " + audio.tag.artist
+			track_list[index] = trackString
 			createPredictionSpectrogram(filename)
 		print("Prediction Spectrograms Created!")
 	else:
 		print("No mp3 files in filesToPredict folder")
-
+	return track_list
